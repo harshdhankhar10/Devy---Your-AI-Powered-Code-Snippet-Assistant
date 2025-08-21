@@ -1,0 +1,126 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+enum Role {
+  USER
+  ADMIN
+}
+
+enum Plan {
+  FREE
+  PRO
+}
+
+model User {
+  id             String   @id @default(cuid())
+  name           String?
+  email          String   @unique
+  password       String
+  username       String   @unique
+  profilePicture String   @default("https://img.freepik.com/premium-vector/profile-icon-vector-image-can-be-used-ui_120816-260932.jpg?semt=ais_hybrid&w=740&q=80")
+  isVerified     Boolean  @default(false)
+  role           Role     @default(USER)
+  lastLogin      DateTime @default(now())
+  totalCredits   Int      @default(25)
+
+  createdAt      DateTime         @default(now())
+  updatedAt      DateTime         @updatedAt()
+  plan           Plan             @default(FREE)
+  Snippet        Snippet[]
+  Comment        Comment[]
+  Like           Like[]
+  Folder         Folder[]
+  RecentActivity RecentActivity[]
+}
+
+enum LastActionModified {
+  NO
+  REFACTOR
+  COMMENT
+  TRANSLATE
+}
+
+model Snippet {
+  id                String             @unique @default(cuid())
+  userId            String
+  user              User               @relation(fields: [userId], references: [id])
+  title             String
+  description       String
+  code              String
+  theme             String?
+  views             Int                @default(0)
+  langugae          String
+  tags              String[]
+  folderId          String?
+  isPublic          Boolean            @default(true)
+  shareUrl          String?
+  aiModified        Boolean            @default(false)
+  lastActionType    LastActionModified @default(NO)
+  version           String             @default("1.0")
+  aiSummary         String?
+  createdAt         DateTime           @default(now())
+  updatedAt         DateTime           @updatedAt()
+  isCommentsAllowed Boolean            @default(true)
+  Comment           Comment[]
+  Like              Like[]
+  Folder            Folder?            @relation(fields: [folderId], references: [id])
+}
+
+model Comment {
+  id        String   @unique @default(cuid())
+  userId    String
+  user      User     @relation(fields: [userId], references: [id])
+  snippetId String
+  snippet   Snippet  @relation(fields: [snippetId], references: [id])
+  content   String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model Like {
+  id        String   @unique @default(cuid())
+  userId    String
+  user      User     @relation(fields: [userId], references: [id])
+  snippetId String
+  snippet   Snippet  @relation(fields: [snippetId], references: [id])
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model Folder {
+  id         String    @unique @default(cuid())
+  name       String
+  folderLogo String    @default("http://cdn-icons-png.flaticon.com/512/5994/5994710.png")
+  userId     String
+  category   String
+  isPublic   Boolean   @default(true)
+  snippets   Snippet[]
+  user       User      @relation(fields: [userId], references: [id])
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model RecentActivity {
+  id          String   @unique @default(cuid())
+  title       String
+  description String
+  userId      String
+  user        User     @relation(fields: [userId], references: [id])
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+}
+
+model creditHistory {
+  id         String   @unique @default(cuid())
+  actionType String
+  creditUsed String
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
+}
