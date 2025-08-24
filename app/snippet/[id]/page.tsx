@@ -5,9 +5,7 @@ import type { Metadata } from "next";
 
 export async function generateMetadata({
     params
-}: {
-    params: { id: string }
-}): Promise<Metadata> {
+}: any): Promise<Metadata> {
     const snippet = await prisma.snippet.findUnique({
         where: {
             id: params.id,
@@ -76,9 +74,7 @@ export async function generateMetadata({
 
 export default async function PublicSnippetPage({
     params
-}: {
-    params: { id: string }
-}) {
+}: any) {
     const snippet = await prisma.snippet.findUnique({
         where: {
             id: params.id,
@@ -110,7 +106,6 @@ export default async function PublicSnippetPage({
         )
     }
 
-    // Increment views async
     await prisma.snippet.update({
         where: { id: params.id },
         data: { views: { increment: 1 } }
