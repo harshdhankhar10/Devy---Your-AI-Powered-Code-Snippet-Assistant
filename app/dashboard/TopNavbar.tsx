@@ -3,11 +3,15 @@ import { CreditCard } from 'lucide-react';
 import React from 'react';
 import { getServerSession } from 'next-auth';
 import { NEXT_AUTH } from '@/utils/auth';
+import prisma from '@/lib/prisma';
 
 
 const TopNavbar = async () => {
     const session = await getServerSession(NEXT_AUTH);
     let userInfo = session?.user;
+    const user = await prisma.user.findFirst({
+        where: { email: userInfo.email }
+    })
     return (
         <header className="h-20 bg-white border-b border-gray-200 flex items-center justify-between px-6">
             <div className="flex items-center">
@@ -39,9 +43,9 @@ const TopNavbar = async () => {
                     />
                 </div>
 
-                <button className="flex gap-2 items-center px-4 py-2 text-sm font-medium text-white bg-[#6C63FF] rounded-lg hover:bg-opacity-90 focus:outline-none">
+                <button className="flex gap-2 items-center px-4 py-2 text-sm font-medium text-white bg-[#6C63FF] rounded-lg  focus:outline-none">
                     <CreditCard />
-                    25 Credits
+                    {user?.totalCredits} Credits
                 </button>
 
                 <button className="p-2 text-gray-500 rounded-full hover:bg-gray-100 hover:text-gray-700 focus:outline-none">

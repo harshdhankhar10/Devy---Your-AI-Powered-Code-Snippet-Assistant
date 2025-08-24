@@ -157,17 +157,12 @@ const Login = () => {
                     </div>
 
                     <div className="flex items-center justify-between">
-                        <div className="flex items-center">
-                            <input
-                                id="remember-me"
-                                name="remember-me"
-                                type="checkbox"
-                                className="h-4 w-4 text-[#6C63FF] bg-white border-gray-300 rounded focus:ring-purple-500 focus:ring-2"
-                            />
-                            <label htmlFor="remember-me" className="ml-2 block text-sm text-gray-700">
-                                Remember me
-                            </label>
-                        </div>
+                        <Link
+                            href="/verify-account"
+                            className="font-medium text-sm text-[#6C63FF] transition-colors"
+                        >
+                            Verify Account?
+                        </Link>
 
                         <div className="text-sm">
                             <Link

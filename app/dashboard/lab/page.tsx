@@ -11,6 +11,7 @@ import {
     Bug,
     Sparkles
 } from 'lucide-react';
+import Link from 'next/link';
 
 const AILab = () => {
     const aiTools = [
@@ -19,63 +20,72 @@ const AILab = () => {
             title: 'AI Refactor',
             description: 'Improve code structure and performance',
             icon: RefreshCw,
-            color: 'bg-blue-50 text-blue-600 border-blue-200'
+            color: 'bg-blue-50 text-blue-600 border-blue-200',
+            link: "/ai-refactor"
         },
         {
             id: 'comments',
             title: 'Add Comments',
             description: 'Generate detailed code documentation',
             icon: MessageSquare,
-            color: 'bg-green-50 text-green-600 border-green-200'
+            color: 'bg-green-50 text-green-600 border-green-200',
+            link: "/add-comments"
         },
         {
             id: 'translation',
             title: 'Code Translation',
             description: 'Convert between programming languages',
             icon: Languages,
-            color: 'bg-purple-50 text-purple-600 border-purple-200'
+            color: 'bg-purple-50 text-purple-600 border-purple-200',
+            link: "/code-translation"
         },
         {
             id: 'optimization',
             title: 'Code Optimization',
             description: 'Enhance performance and efficiency',
             icon: Zap,
-            color: 'bg-yellow-50 text-yellow-600 border-yellow-200'
+            color: 'bg-yellow-50 text-yellow-600 border-yellow-200',
+            link: "code-optimization"
         },
         {
             id: 'security',
             title: 'Security Review',
             description: 'Identify and fix security vulnerabilities',
             icon: Shield,
-            color: 'bg-red-50 text-red-600 border-red-200'
+            color: 'bg-red-50 text-red-600 border-red-200',
+            link: "/security-review"
         },
         {
             id: 'pseudocode',
             title: 'Convert to Pseudocode',
             description: 'Transform code into readable pseudocode',
             icon: FileText,
-            color: 'bg-indigo-50 text-indigo-600 border-indigo-200'
+            color: 'bg-indigo-50 text-indigo-600 border-indigo-200',
+            link: "/convert-to-pseudocode"
         },
         {
             id: 'tests',
             title: 'Generate Tests',
             description: 'Create comprehensive test cases',
             icon: TestTube,
-            color: 'bg-teal-50 text-teal-600 border-teal-200'
+            color: 'bg-teal-50 text-teal-600 border-teal-200',
+            link: "/generate-tests"
         },
         {
             id: 'explain',
             title: 'Explain Code',
             description: 'Get detailed code explanations',
             icon: HelpCircle,
-            color: 'bg-orange-50 text-orange-600 border-orange-200'
+            color: 'bg-orange-50 text-orange-600 border-orange-200',
+            link: "/explain-code"
         },
         {
             id: 'bugfix',
             title: 'Bug Fix Suggestions',
             description: 'Identify and suggest fixes for bugs',
             icon: Bug,
-            color: 'bg-pink-50 text-pink-600 border-pink-200'
+            color: 'bg-pink-50 text-pink-600 border-pink-200',
+            link: "/bug-fix"
         }
     ];
 
@@ -95,23 +105,25 @@ const AILab = () => {
                 {aiTools.map((tool) => {
                     const Icon = tool.icon;
                     return (
-                        <Card key={tool.id} className={`cursor-pointer transition-all hover:shadow-sm border ${tool.color}`}>
-                            <CardContent className="p-6">
-                                <div className="flex items-start gap-3">
-                                    <div className="flex-shrink-0">
-                                        <Icon className="h-6 w-6" />
+                        <Link href={`/dashboard/lab${tool.link}`} key={tool.id}>
+                            <Card className={`cursor-pointer transition-all hover:shadow-sm border ${tool.color}`}>
+                                <CardContent className="p-6">
+                                    <div className="flex items-start gap-3">
+                                        <div className="flex-shrink-0">
+                                            <Icon className="h-6 w-6" />
+                                        </div>
+                                        <div className="flex-1 min-w-0">
+                                            <h3 className=" font-semibold text-base mb-2">
+                                                {tool.title}
+                                            </h3>
+                                            <p className=" text-sm text-slate-600 leading-relaxed">
+                                                {tool.description}
+                                            </p>
+                                        </div>
                                     </div>
-                                    <div className="flex-1 min-w-0">
-                                        <h3 className=" font-semibold text-base mb-2">
-                                            {tool.title}
-                                        </h3>
-                                        <p className=" text-sm text-slate-600 leading-relaxed">
-                                            {tool.description}
-                                        </p>
-                                    </div>
-                                </div>
-                            </CardContent>
-                        </Card>
+                                </CardContent>
+                            </Card>
+                        </Link>
                     );
                 })}
             </div>
