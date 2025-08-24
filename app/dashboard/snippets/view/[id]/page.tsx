@@ -3,27 +3,27 @@ import { getServerSession } from 'next-auth'
 import { NEXT_AUTH } from '@/utils/auth'
 import SnippetView from '@/app/dashboard/SnippetView'
 
-interface SnippetPageProps {
-    params: { id: string }
-}
 
-export default async function SnippetPage({ params }: SnippetPageProps) {
+export default async function SnippetPage({
+    params,
+}: any) {
+
     const session = await getServerSession(NEXT_AUTH)
     const userId = session?.user.id
 
     const snippet = await prisma.snippet.findUnique({
         where: {
             id: params.id,
-            userId: userId
+            userId: userId,
         },
         include: {
             user: {
                 select: {
                     name: true,
-                    profilePicture: true
-                }
-            }
-        }
+                    profilePicture: true,
+                },
+            },
+        },
     })
 
     if (!snippet) {
@@ -36,7 +36,7 @@ export default async function SnippetPage({ params }: SnippetPageProps) {
 
     await prisma.snippet.update({
         where: { id: params.id },
-        data: { views: { increment: 1 } }
+        data: { views: { increment: 1 } },
     })
 
     return <SnippetView snippet={JSON.parse(JSON.stringify(snippet))} />
