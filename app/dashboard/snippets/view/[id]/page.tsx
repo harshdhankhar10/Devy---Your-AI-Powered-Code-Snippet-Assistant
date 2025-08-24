@@ -3,11 +3,11 @@ import { getServerSession } from 'next-auth'
 import { NEXT_AUTH } from '@/utils/auth'
 import SnippetView from '@/app/dashboard/SnippetView'
 
-export default async function SnippetPage({
-    params
-}: {
+interface SnippetPageProps {
     params: { id: string }
-}) {
+}
+
+export default async function SnippetPage({ params }: SnippetPageProps) {
     const session = await getServerSession(NEXT_AUTH)
     const userId = session?.user.id
 
@@ -27,7 +27,11 @@ export default async function SnippetPage({
     })
 
     if (!snippet) {
-        return <div className="p-8 text-center">Snippet not found or you don't have access</div>
+        return (
+            <div className="p-8 text-center">
+                Snippet not found or you don't have access
+            </div>
+        )
     }
 
     await prisma.snippet.update({
