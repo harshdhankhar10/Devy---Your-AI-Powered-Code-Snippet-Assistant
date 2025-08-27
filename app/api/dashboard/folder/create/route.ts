@@ -24,6 +24,19 @@ export async function POST(req: NextRequest) {
     try {
         const { folderName } = await req.json();
 
+        let date = new Date()
+        let timeString = `${date.getHours()}:${date.getMinutes().toString().padStart(2, "0")}`
+        let dateString = `${date.getDate()}-${date.getMonth()}-${date.getFullYear()}`
+
+
+        await prisma.recentActivity.create({
+            data: {
+                userId: session.user.id,
+                title: "Folder Created!",
+                description: `Folder name ${folderName} was created at ${timeString} ${date.getHours() > 12 ? " PM" : " AM"} on ${dateString}`,
+            }
+        })
+
         await prisma.folder.create({
             data: {
                 name: folderName,

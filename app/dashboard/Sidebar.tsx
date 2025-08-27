@@ -1,6 +1,10 @@
+"use client"
+
 import React from 'react';
-import { ArrowLeftRightIcon } from "lucide-react"
+import { ArrowLeftRightIcon, LogOut, SquareActivity } from "lucide-react"
 import Link from 'next/link';
+import { Button } from '@/components/ui/button';
+import { signOut } from 'next-auth/react';
 
 const Sidebar = () => {
     return (
@@ -172,26 +176,17 @@ const Sidebar = () => {
                             </svg>
                             <span className="ml-3">Settings</span>
                         </a>
-                        <a
-                            href="#"
+                        <Link
+                            href="/dashboard/recent-activity"
                             className="flex items-center px-3 py-2.5 text-sm font-medium text-gray-600 hover:bg-gray-200 rounded-lg"
                         >
-                            <svg
-                                className="w-5 h-5"
-                                fill="none"
-                                stroke="currentColor"
-                                viewBox="0 0 24 24"
-                                xmlns="http://www.w3.org/2000/svg"
-                            >
-                                <path
-                                    strokeLinecap="round"
-                                    strokeLinejoin="round"
-                                    strokeWidth="2"
-                                    d="M3 10h18M7 15h1m4 0h1m-7 4h12a3 3 0 003-3V8a3 3 0 00-3-3H6a3 3 0 00-3 3v8a3 3 0 003 3z"
-                                ></path>
-                            </svg>
-                            <span className="ml-3">Billing</span>
-                        </a>
+                            <SquareActivity className='h-5 w-5' />
+                            <span className="ml-3">Recent Activity</span>
+                        </Link>
+                        <Button onClick={() => (signOut())} className='w-full flex  justify-start' >
+                            <LogOut className='h-5 w-5' />
+                            <span className="ml-3">Sign Out</span>
+                        </Button>
                     </div>
                 </div>
             </div>

@@ -15,6 +15,7 @@ const Login = () => {
     const [password, setPassword] = useState("");
     const [error, setError] = useState("");
     const [loading, setLoading] = useState(false);
+    const router = useRouter();
 
     const handleLogin = async (e: React.FormEvent) => {
         e.preventDefault();
@@ -33,6 +34,13 @@ const Login = () => {
 
             if (response?.error) {
                 setError(response.error);
+                setTimeout(() => {
+                    if (response.error === "Please verify your email before logging in.") {
+                        router.push("/verify-account")
+                    }
+                }, 1500)
+            } else {
+                router.push("/dashboard")
             }
 
         } catch (error: any) {

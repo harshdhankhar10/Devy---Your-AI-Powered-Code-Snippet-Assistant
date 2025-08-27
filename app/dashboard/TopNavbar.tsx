@@ -4,6 +4,8 @@ import React from 'react';
 import { getServerSession } from 'next-auth';
 import { NEXT_AUTH } from '@/utils/auth';
 import prisma from '@/lib/prisma';
+import { Button } from '@/components/ui/button';
+import Link from 'next/link';
 
 
 const TopNavbar = async () => {
@@ -43,10 +45,12 @@ const TopNavbar = async () => {
                     />
                 </div>
 
-                <button className="flex gap-2 items-center px-4 py-2 text-sm font-medium text-white bg-[#6C63FF] rounded-lg  focus:outline-none">
-                    <CreditCard />
-                    {user?.totalCredits} Credits
-                </button>
+                <Link href="/dashboard/credits-history">
+                    <Button >
+                        <CreditCard />
+                        {user?.totalCredits} Credits
+                    </Button>
+                </Link>
 
                 <button className="p-2 text-gray-500 rounded-full hover:bg-gray-100 hover:text-gray-700 focus:outline-none">
                     <svg
