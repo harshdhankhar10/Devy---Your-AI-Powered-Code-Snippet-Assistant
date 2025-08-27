@@ -3,7 +3,7 @@
 
 [](https://www.google.com/search?q=https://github.com/harshdhankhar10/devy/actions)
 [](https://opensource.org/licenses/MIT)
-[](https://www.google.com/search?q=https://github.com/your-username/devy/stargazers)
+[](https://www.google.com/search?q=https://github.com/harshdhankhar10/devy/)
 
 **Store, enhance, and reuse your code snippets with the power of AI—transforming your trusted code into your best code.**
 
@@ -86,25 +86,6 @@ Create a `.env.local` file in the root of the project by copying the example fil
 cp .env.example .env.local
 ```
 
-Now, fill in the `.env.local` file with your keys from Supabase, OpenAI, and your OAuth providers.
-
-```env
-# Supabase
-NEXT_PUBLIC_SUPABASE_URL=your_supabase_project_url
-NEXT_PUBLIC_SUPABASE_ANON_KEY=your_supabase_anon_key
-
-# OpenAI
-OPENAI_API_KEY=your_openai_api_key
-
-# NextAuth
-NEXTAUTH_URL=http://localhost:3000
-NEXTAUTH_SECRET=a_random_secret_string_for_jwt
-
-# OAuth Providers (GitHub, Google, etc.)
-GITHUB_CLIENT_ID=your_github_oauth_client_id
-GITHUB_CLIENT_SECRET=your_github_oauth_client_secret
-```
-
 ### 4\. Run the Development Server
 
 ```bash
@@ -117,11 +98,11 @@ The application should now be running at [http://localhost:3000](https://www.goo
 
 Devy is an actively developed project. Here are some of the exciting features we have planned:
 
-  - [ ] **VS Code Extension:** Access, save, and use your Devy snippets without ever leaving your editor.
+  - [ ] **VS Code Extension:** Access, save, and use your Devy snippets without ever leaving your editor. **(Comming Soon)**
   - [ ] **Team Workspaces:** Create shared folders, manage roles, and build a collaborative team knowledge base.
   - [ ] **Project Cookbooks:** Create rich documentation that combines Markdown with live, executable code snippets.
   - [ ] **Developer Toolkit:** A suite of AI-powered utilities like a Regex Generator, JSON-to-Type Converter, and a Cron Job Explainer.
-  - [ ] **GitHub Integration:** Sync snippets directly from your public or private GitHub Gists and repositories.
+  - [ ] **GitHub Integration:** Sync snippets directly from your public or private GitHub Gists and repositories. **(Comming Soon)**
 
 ## 🤝 How to Contribute
 
