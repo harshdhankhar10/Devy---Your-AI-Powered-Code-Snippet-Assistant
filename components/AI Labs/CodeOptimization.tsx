@@ -2,41 +2,61 @@
 
 import React, { useState } from 'react';
 import Editor from '@monaco-editor/react';
-import { Copy, Save, Check, WandSparkles, Loader, Download } from 'lucide-react';
+import { Copy, Check, Zap, Loader, Download, BarChart3, Clock, Cpu } from 'lucide-react';
 import { Button } from '../ui/button';
 import axios from 'axios';
 
-const AIRefactor = ({ isUserLoggedIn }: any) => {
-    const [refactorType, setRefactorType] = useState('readability');
+const CodeOptimization = ({ isUserLoggedIn }: any) => {
     const [language, setLanguage] = useState('javascript');
     const [code, setCode] = useState("")
-    const [refactoredCode, setRefactoredCode] = useState("")
+    const [optimizedCode, setOptimizedCode] = useState("")
     const [loading, setLoading] = useState(false)
     const [copied, setCopied] = useState(false)
+    const [optimizationType, setOptimizationType] = useState('performance')
 
-    const languages = [
+    const programmingLanguages = [
         { value: 'javascript', label: 'JavaScript' },
         { value: 'python', label: 'Python' },
         { value: 'typescript', label: 'TypeScript' },
         { value: 'java', label: 'Java' },
+        { value: 'csharp', label: 'C#' },
+        { value: 'cpp', label: 'C++' },
         { value: 'go', label: 'Go' },
-        { value: 'rust', label: 'Rust' }
+        { value: 'rust', label: 'Rust' },
+        { value: 'swift', label: 'Swift' },
+        { value: 'kotlin', label: 'Kotlin' },
+        { value: 'php', label: 'PHP' },
+        { value: 'ruby', label: 'Ruby' }
     ];
 
-    const handleRefactorCode = async () => {
+    const optimizationTypes = [
+        { value: 'performance', label: 'Performance', icon: <Cpu className="w-4 h-4" />, description: 'Focus on execution speed and efficiency' },
+        { value: 'memory', label: 'Memory', icon: <BarChart3 className="w-4 h-4" />, description: 'Reduce memory usage and footprint' },
+        { value: 'readability', label: 'Readability', icon: <Clock className="w-4 h-4" />, description: 'Improve code clarity and maintainability' },
+        { value: 'comprehensive', label: 'Comprehensive', icon: <Zap className="w-4 h-4" />, description: 'Balance all optimization aspects' }
+    ];
+
+    const handleOptimizeCode = async () => {
         if (code.trim() === "") {
             alert("Code input should not be empty!")
             return
         };
         setLoading(true)
         try {
-            const response = await axios.post("/api/lab/ai-refactor", {
-                language, code, refactorType
+            const response = await axios.post("/api/lab/code-optimization", {
+                language,
+                code,
+                optimizationType
             })
             if (response.status === 201) {
-                setRefactoredCode(response.data.response)
+                setOptimizedCode(response.data.response)
                 setLoading(false)
-                alert(response.data.message)
+                if (response.data.analysis) {
+                    // Show optimization insights if available
+                    alert(`${response.data.message}\n\nOptimization Insights:\n${response.data.analysis}`);
+                } else {
+                    alert(response.data.message)
+                }
             } else {
                 alert(response.data.error)
             }
@@ -50,9 +70,9 @@ const AIRefactor = ({ isUserLoggedIn }: any) => {
     }
 
     const handleCopyCode = () => {
-        if (refactoredCode.trim() === "") return;
+        if (optimizedCode.trim() === "") return;
 
-        navigator.clipboard.writeText(refactoredCode)
+        navigator.clipboard.writeText(optimizedCode)
             .then(() => {
                 setCopied(true);
                 setTimeout(() => setCopied(false), 2000);
@@ -64,21 +84,27 @@ const AIRefactor = ({ isUserLoggedIn }: any) => {
     }
 
     const handleExportCode = () => {
-        if (refactoredCode.trim() === "") return;
+        if (optimizedCode.trim() === "") return;
 
         const fileExtensionMap: Record<string, string> = {
             javascript: 'js',
             typescript: 'ts',
             python: 'py',
             java: 'java',
+            csharp: 'cs',
+            cpp: 'cpp',
             go: 'go',
-            rust: 'rs'
+            rust: 'rs',
+            swift: 'swift',
+            kotlin: 'kt',
+            php: 'php',
+            ruby: 'rb'
         };
 
         const extension = fileExtensionMap[language] || 'txt';
-        const filename = `devy_refactored_code.${extension}`;
+        const filename = `devy_optimized_code.${extension}`;
 
-        const blob = new Blob([refactoredCode], { type: 'text/plain' });
+        const blob = new Blob([optimizedCode], { type: 'text/plain' });
         const url = URL.createObjectURL(blob);
         const link = document.createElement('a');
 
@@ -93,21 +119,77 @@ const AIRefactor = ({ isUserLoggedIn }: any) => {
         }, 100);
     }
 
+    // Example code snippets that could benefit from optimization
+    const optimizationExamples: Record<string, string> = {
+        javascript: `// Inefficient Fibonacci calculation
+function fibonacci(n) {
+    if (n <= 1) return n;
+    return fibonacci(n - 1) + fibonacci(n - 2);
+}
+
+// Inefficient array filtering
+const numbers = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
+const evenNumbers = [];
+for (let i = 0; i < numbers.length; i++) {
+    if (numbers[i] % 2 === 0) {
+        evenNumbers.push(numbers[i]);
+    }
+}
+
+console.log(fibonacci(10), evenNumbers);`,
+        python: `# Inefficient code examples
+def fibonacci(n):
+    if n <= 1:
+        return n
+    return fibonacci(n-1) + fibonacci(n-2)
+
+# Inefficient list processing
+numbers = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]
+even_numbers = []
+for num in numbers:
+    if num % 2 == 0:
+        even_numbers.append(num)
+
+print(fibonacci(10), even_numbers)`,
+        java: `// Inefficient Java code
+public class InefficientCode {
+    public static int fibonacci(int n) {
+        if (n <= 1) return n;
+        return fibonacci(n-1) + fibonacci(n-2);
+    }
+    
+    public static void main(String[] args) {
+        int[] numbers = {1, 2, 3, 4, 5, 6, 7, 8, 9, 10};
+        ArrayList<Integer> evenNumbers = new ArrayList<>();
+        for (int i = 0; i < numbers.length; i++) {
+            if (numbers[i] % 2 == 0) {
+                evenNumbers.add(numbers[i]);
+            }
+        }
+        System.out.println(fibonacci(10) + " " + evenNumbers);
+    }
+}`
+    };
+
+    const insertExample = () => {
+        const example = optimizationExamples[language] || optimizationExamples.javascript;
+        setCode(example);
+    };
+
     return (
         <div className="bg-gradient-to-br from-slate-50 to-slate-100 min-h-screen pt-14 font-sans">
             <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
 
                 <header className="text-center mb-12">
-
                     <h1 className="text-5xl font-bold text-slate-900 tracking-tight mb-4">
-                        AI Code Refactor
+                        AI Code Optimization
                     </h1>
                     <p className="text-xl text-slate-600 max-w-3xl mx-auto leading-relaxed">
-                        Transform your code with intelligent refactoring powered by AI. Enhance readability, performance, and modern syntax patterns.
+                        Enhance your code's performance, reduce memory usage, and improve efficiency with AI-powered optimization.
                     </p>
                 </header>
 
-                <div className="bg-white rounded-md border border-slate-200 shadow-sm p-8 mb-8">
+                <div className="bg-white rounded-xl border border-slate-200 shadow-sm p-8 mb-8">
                     <div className="flex flex-wrap items-center justify-between gap-6">
                         <div className="flex items-center gap-6">
                             <div className="flex flex-col gap-2">
@@ -117,9 +199,9 @@ const AIRefactor = ({ isUserLoggedIn }: any) => {
                                 <select
                                     value={language}
                                     onChange={(e) => setLanguage(e.target.value)}
-                                    className="px-4 py-3 text-sm font-medium bg-slate-50 border border-slate-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-[#6C63FF] focus:border-transparent transition-all duration-200 min-w-[200px]"
+                                    className="px-4 py-3 text-sm font-medium bg-slate-50 border border-slate-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#6C63FF] focus:border-transparent transition-all duration-200 min-w-[150px]"
                                 >
-                                    {languages.map(lang => (
+                                    {programmingLanguages.map(lang => (
                                         <option key={lang.value} value={lang.value}>
                                             {lang.label}
                                         </option>
@@ -129,52 +211,75 @@ const AIRefactor = ({ isUserLoggedIn }: any) => {
 
                             <div className="flex flex-col gap-2">
                                 <label className="text-sm font-semibold text-slate-700 uppercase tracking-wide">
-                                    Refactor Type
+                                    Optimization Focus
                                 </label>
-                                <div className="flex items-center bg-slate-100 rounded-xl p-1">
-                                    {['performance', 'readability', 'modern syntax'].map((type) => (
+                                <div className="grid grid-cols-2 gap-2">
+                                    {optimizationTypes.map((type) => (
                                         <button
-                                            key={type}
-                                            onClick={() => setRefactorType(type)}
-                                            className={`px-4 py-2 text-sm font-semibold rounded-lg transition-all duration-200 capitalize min-w-[120px] ${refactorType === type
-                                                ? 'bg-white text-[#6C63FF] shadow-md'
-                                                : 'text-slate-600 hover:text-slate-800'
+                                            key={type.value}
+                                            onClick={() => setOptimizationType(type.value)}
+                                            className={`flex flex-col items-center p-3 rounded-lg transition-all duration-200 ${optimizationType === type.value
+                                                ? 'bg-[#6C63FF] text-white shadow-md'
+                                                : 'bg-slate-100 text-slate-700 hover:bg-slate-200'
                                                 }`}
+                                            title={type.description}
                                         >
-                                            {type}
+                                            <span className="mb-1">{type.icon}</span>
+                                            <span className="text-xs font-medium">{type.label}</span>
                                         </button>
                                     ))}
                                 </div>
                             </div>
                         </div>
 
-                        {isUserLoggedIn ? (<Button onClick={handleRefactorCode} disabled={loading || !code}>
-                            {loading ? (<Loader className='animate-spin' />) : (<span className='flex justify-center items-center gap-2'>
-                                <WandSparkles className="w-5 h-5" />
-                                Refactor Code
-                            </span>)}
-                        </Button>) : (<Button disabled>
-                            Login to Refactor
-                        </Button>)}
+                        <div className="flex items-center gap-4">
+                            <Button
+                                variant="outline"
+                                onClick={insertExample}
+                                className="flex items-center gap-2"
+                            >
+                                <Zap className="w-4 h-4" />
+                                Insert Example
+                            </Button>
+
+                            {isUserLoggedIn ? (
+                                <Button onClick={handleOptimizeCode} disabled={loading || !code}>
+                                    {loading ? (
+                                        <Loader className='animate-spin' />
+                                    ) : (
+                                        <span className='flex justify-center items-center gap-2'>
+                                            <Zap className="w-5 h-5" />
+                                            Optimize Code
+                                        </span>
+                                    )}
+                                </Button>
+                            ) : (
+                                <Button disabled>
+                                    Login to Optimize
+                                </Button>
+                            )}
+                        </div>
                     </div>
                 </div>
 
                 <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 ">
                     <div className="bg-white rounded-2xl border border-slate-200 shadow-lg overflow-hidden">
-                        <div className="px-6 py-4 bg-slate-50 border-b border-slate-200">
-                            <h3 className="text-lg font-bold text-slate-800">Original Code</h3>
-                            <p className="text-sm text-slate-600 mt-1">Paste or edit your code here</p>
+                        <div className="px-6 py-4 bg-slate-50 border-b border-slate-200 flex justify-between items-center">
+                            <div>
+                                <h3 className="text-lg font-bold text-slate-800">Original Code</h3>
+                                <p className="text-sm text-slate-600 mt-1">Code to optimize</p>
+                            </div>
                         </div>
                         <div className="h-[600px]">
                             <Editor
                                 height="100%"
                                 language={language}
-                                value={code || "// Enter Code here.. \n"}
+                                value={code || `// Enter code to optimize here.. \n`}
                                 onChange={(value) => setCode(value || "")}
                                 theme="vs-dark"
                                 options={{
                                     fontFamily: "Fira Code",
-                                    fontSize: 18,
+                                    fontSize: 16,
                                     fontLigatures: true,
                                     minimap: { enabled: false },
                                     scrollBeyondLastLine: false,
@@ -194,13 +299,13 @@ const AIRefactor = ({ isUserLoggedIn }: any) => {
                     <div className="bg-white rounded-2xl border border-slate-200 shadow-lg overflow-hidden">
                         <div className="px-6 py-4 bg-slate-50 border-b border-slate-200 flex justify-between items-center">
                             <div>
-                                <h3 className="text-lg font-bold text-slate-800">Refactored Code</h3>
-                                <p className="text-sm text-slate-600 mt-1">AI-enhanced version</p>
+                                <h3 className="text-lg font-bold text-slate-800">Optimized Code</h3>
+                                <p className="text-sm text-slate-600 mt-1">AI-optimized version</p>
                             </div>
                             <div className="flex items-center gap-2">
                                 <button
                                     onClick={handleCopyCode}
-                                    disabled={refactoredCode.trim() === ""}
+                                    disabled={optimizedCode.trim() === ""}
                                     className="p-2 text-slate-500 hover:text-[#6C63FF] hover:bg-slate-100 rounded-lg transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
                                     title="Copy to clipboard"
                                 >
@@ -208,7 +313,7 @@ const AIRefactor = ({ isUserLoggedIn }: any) => {
                                 </button>
                                 <button
                                     onClick={handleExportCode}
-                                    disabled={refactoredCode.trim() === ""}
+                                    disabled={optimizedCode.trim() === ""}
                                     className="p-2 text-slate-500 hover:text-[#6C63FF] hover:bg-slate-100 rounded-lg transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
                                     title="Export to file"
                                 >
@@ -220,12 +325,12 @@ const AIRefactor = ({ isUserLoggedIn }: any) => {
                             <Editor
                                 height="100%"
                                 language={language}
-                                value={refactoredCode}
+                                value={optimizedCode}
                                 theme="vs-dark"
                                 options={{
                                     readOnly: true,
                                     fontFamily: "Fira Code",
-                                    fontSize: 18,
+                                    fontSize: 16,
                                     fontLigatures: true,
                                     minimap: { enabled: false },
                                     scrollBeyondLastLine: false,
@@ -245,9 +350,9 @@ const AIRefactor = ({ isUserLoggedIn }: any) => {
 
                 <div className="mt-8 text-center">
                     <div className="inline-flex items-center gap-4 bg-white rounded-2xl px-8 py-4 border border-slate-200 shadow-lg">
-                        <div className="w-2 h-2 bg-green-500 rounded-full animate-pulse"></div>
+                        <div className="w-2 h-2 bg-purple-500 rounded-full animate-pulse"></div>
                         <span className="text-sm font-medium text-slate-600">
-                            Ready to refactor • Powered by AI
+                            Optimize for performance, memory, or readability • Powered by AI
                         </span>
                     </div>
                 </div>
@@ -256,4 +361,4 @@ const AIRefactor = ({ isUserLoggedIn }: any) => {
     );
 }
 
-export default AIRefactor;
+export default CodeOptimization;
