@@ -1,3 +1,4 @@
+import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import {
     RefreshCw,
@@ -37,7 +38,7 @@ const AILab = () => {
             description: 'Convert between programming languages',
             icon: Languages,
             color: 'bg-purple-50 text-purple-600 border-purple-200',
-            link: "/code-translation"
+            link: "/code-translate"
         },
         {
             id: 'optimization',
@@ -45,16 +46,9 @@ const AILab = () => {
             description: 'Enhance performance and efficiency',
             icon: Zap,
             color: 'bg-yellow-50 text-yellow-600 border-yellow-200',
-            link: "code-optimization"
+            link: "/code-optimization"
         },
-        {
-            id: 'security',
-            title: 'Security Review',
-            description: 'Identify and fix security vulnerabilities',
-            icon: Shield,
-            color: 'bg-red-50 text-red-600 border-red-200',
-            link: "/security-review"
-        },
+
         {
             id: 'pseudocode',
             title: 'Convert to Pseudocode',
@@ -63,14 +57,7 @@ const AILab = () => {
             color: 'bg-indigo-50 text-indigo-600 border-indigo-200',
             link: "/convert-to-pseudocode"
         },
-        {
-            id: 'tests',
-            title: 'Generate Tests',
-            description: 'Create comprehensive test cases',
-            icon: TestTube,
-            color: 'bg-teal-50 text-teal-600 border-teal-200',
-            link: "/generate-tests"
-        },
+
         {
             id: 'explain',
             title: 'Explain Code',
@@ -79,14 +66,7 @@ const AILab = () => {
             color: 'bg-orange-50 text-orange-600 border-orange-200',
             link: "/explain-code"
         },
-        {
-            id: 'bugfix',
-            title: 'Bug Fix Suggestions',
-            description: 'Identify and suggest fixes for bugs',
-            icon: Bug,
-            color: 'bg-pink-50 text-pink-600 border-pink-200',
-            link: "/bug-fix"
-        }
+
     ];
 
     return (
@@ -105,7 +85,7 @@ const AILab = () => {
                 {aiTools.map((tool) => {
                     const Icon = tool.icon;
                     return (
-                        <Link href={`/dashboard/lab${tool.link}`} key={tool.id}>
+                        <Link href={`/ai-lab${tool.link}`} key={tool.id}>
                             <Card className={`cursor-pointer transition-all hover:shadow-sm border ${tool.color}`}>
                                 <CardContent className="p-6">
                                     <div className="flex items-start gap-3">
@@ -126,6 +106,11 @@ const AILab = () => {
                         </Link>
                     );
                 })}
+            </div>
+            <div className="flex justify-center items-center mt-12 gap-2">
+                <Button className='cursor-not-allowed'>
+                    <span className='h-2 w-2 animate-pulse bg-white rounded-full'></span> And More Comming Soon..
+                </Button>
             </div>
         </div>
     );
