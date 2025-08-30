@@ -1,151 +1,228 @@
 "use client"
 import { useState } from 'react';
-import { Button } from "@/components/ui/button";
-import { ArrowRight, Play, Copy, Check } from "lucide-react";
+import { Copy, Check, Play, Code, Zap, Brain, Shield, Sparkles, BookOpen, Languages, Bug, Lock } from "lucide-react";
 import { Prism as SyntaxHighlighter } from 'react-syntax-highlighter';
-import { atomDark } from 'react-syntax-highlighter/dist/cjs/styles/prism';
+import { vscDarkPlus } from 'react-syntax-highlighter/dist/esm/styles/prism';
+import Link from 'next/link';
 
-const HeroSection = () => {
+
+type TabKey = "refactor" | "explain" | "translate";
+
+
+const DevyHero = () => {
     const [copied, setCopied] = useState(false);
+    const [activeTab, setActiveTab] = useState<TabKey>('refactor');
 
-    const codeString = `function debounce(fn, delay) {
-  let timeout;
-  return (...args) => {
-    clearTimeout(timeout);
-    timeout = setTimeout(() => fn(...args), delay);
-  };
+    const codeExamples = {
+        refactor: `// Original code
+function calculate(items) {
+  let t = 0;
+  for (let i = 0; i < items.length; i++) {
+    t += items[i].price * items[i].quantity;
+  }
+  return t;
 }
-`;
+
+// Refactored with Devy
+function calculateTotal(items) {
+  return items.reduce((total, item) => 
+    total + (item.price * item.quantity), 0);
+}`,
+
+        explain: `// Complex code snippet
+const result = data
+  .filter(x => x.active)
+  .map(x => ({ 
+    ...x, 
+    fullName: x.firstName + ' ' + x.lastName 
+  }))
+  .sort((a, b) => a.createdAt - b.createdAt);
+
+// Devy explanation:
+// This code filters active users, creates fullName 
+// by combining first and last names, then sorts 
+// by creation date in ascending order.`,
+
+        translate: `// Python code
+def factorial(n):
+    if n == 0:
+        return 1
+    else:
+        return n * factorial(n-1)
+
+// Translated to JavaScript by Devy
+function factorial(n) {
+  if (n === 0) return 1;
+  return n * factorial(n - 1);
+}`
+    };
+
+    const features = [
+        {
+            icon: <Zap className="h-5 w-5" />,
+            title: "Refactor & Modernize",
+            description: "Transform legacy code into modern, clean and maintainable code"
+        },
+        {
+            icon: <BookOpen className="h-5 w-5" />,
+            title: "Explain Code",
+            description: "Get plain English explanations of complex code snippets"
+        },
+        {
+            icon: <Languages className="h-5 w-5" />,
+            title: "Translate Between Languages",
+            description: "Convert code between programming languages with ease"
+        },
+        {
+            icon: <Sparkles className="h-5 w-5" />,
+            title: "Optimize Performance",
+            description: "Improve code efficiency and reduce memory usage"
+        },
+        {
+            icon: <Bug className="h-5 w-5" />,
+            title: "Bug Fixing",
+            description: "Identify and fix bugs in your code automatically"
+        },
+        {
+            icon: <Lock className="h-5 w-5" />,
+            title: "Security Review",
+            description: "Detect security vulnerabilities and get fixes"
+        }
+    ];
 
     const handleCopy = () => {
-        navigator.clipboard.writeText(codeString);
+        navigator.clipboard.writeText(codeExamples[activeTab]);
         setCopied(true);
         setTimeout(() => setCopied(false), 2000);
     };
 
+
+
     return (
-        <section className="bg-gradient-to-br from-gray-900 to-gray-800 px-6 py-24 relative overflow-hidden">
-            <div className="absolute top-0 right-0 w-96 h-96 bg-blue-600/10 rounded-full blur-3xl"></div>
-            <div className="absolute bottom-0 left-0 w-96 h-96 bg-indigo-600/10 rounded-full blur-3xl"></div>
+        <div className="min-h-screen bg-white py-20">
+            <div className="max-w-7xl mx-auto px-6">
+                <div className="grid grid-cols-1 lg:grid-cols-2 gap-12">
+                    <div className=" rounded-2xl p-6 shadow-sm">
+                        <h1 className="text-4xl font-bold text-gray-900 mb-4">
+                            AI-Powered Snippet Assistant
+                        </h1>
+                        <p className="text-lg text-gray-600 mb-8">
+                            Refactor, explain, translate, and optimize your code with Devy's intelligent AI assistance.
+                        </p>
 
-            <div className="max-w-7xl mt-12 mx-auto text-center relative z-10">
-                <div className="mb-16">
-                    <h1 className="text-4xl md:text-6xl lg:text-7xl font-bold text-white mb-6 leading-tight">
-                        <span className="bg-clip-text text-transparent bg-gradient-to-r from-blue-400 to-indigo-500">
-                            Write Better, Smarter Code
-                        </span>
-                        <span className="block text-gray-200">With Devy</span>
-                    </h1>
+                        <div className="bg-white rounded-xl shadow-md overflow-hidden mb-6">
+                            <div className="flex justify-between items-center bg-gray-100 px-4 py-2">
+                                <div className="flex space-x-2">
+                                    <div className="w-3 h-3 bg-red-400 rounded-full"></div>
+                                    <div className="w-3 h-3 bg-yellow-400 rounded-full"></div>
+                                    <div className="w-3 h-3 bg-green-400 rounded-full"></div>
+                                </div>
 
-                    <p className="text-xl md:text-2xl text-gray-300 mb-6 max-w-3xl mx-auto leading-relaxed">
-                        Store, refactor, and reuse your favorite code with one powerful assistant — built for developers.
-
-                    </p>
-
-                    <div className="flex flex-col sm:flex-row gap-4 justify-center mb-16">
-                        <Button className="bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-700 hover:to-indigo-700 text-white px-8 py-6 text-lg group shadow-lg hover:shadow-xl transition-all duration-300">
-                            Start Coding Smarter
-                            <ArrowRight className="ml-2 h-5 w-5 group-hover:translate-x-1 transition-transform" />
-                        </Button>
-                        <Button variant="outline" className=" hover:text-white px-8 py-6 text-lg border border-gray-700 hover:bg-gray-800/50 transition-all duration-300 group">
-                            <Play className="mr-2 h-5 w-5 group-hover:scale-110 transition-transform" />
-                            Watch Demo
-                        </Button>
-                    </div>
-                </div>
-
-                <div className="grid grid-cols-2 md:grid-cols-4 gap-8 mb-16">
-                    {[
-                        { value: "50K+", label: "Developers" },
-                        { value: "2M+", label: "Snippets" },
-                        { value: "500+", label: "Companies" },
-                        { value: "99.9%", label: "Uptime" }
-                    ].map((stat, index) => (
-                        <div key={index} className="text-center">
-                            <div className="text-3xl font-bold text-white mb-2">{stat.value}</div>
-                            <div className="text-sm text-gray-400">{stat.label}</div>
-                        </div>
-                    ))}
-                </div>
-
-                <div className="max-w-5xl mx-auto">
-                    <div className="bg-gray-900 rounded-2xl p-6 text-left shadow-2xl border border-gray-800 relative overflow-hidden">
-                        <div className="flex items-center justify-between mb-4">
-                            <div className="flex items-center space-x-2">
-                                <div className="w-3 h-3 bg-red-500 rounded-full"></div>
-                                <div className="w-3 h-3 bg-yellow-500 rounded-full"></div>
-                                <div className="w-3 h-3 bg-green-500 rounded-full"></div>
+                                <div className="flex space-x-4 font-medium">
+                                    <button
+                                        className={`px-3 py-1  rounded-lg text-sm ${activeTab === 'refactor' ? 'bg-[#6C63FF] text-white' : 'text-gray-600 hover:text-[#6C63FF]'}`}
+                                        onClick={() => setActiveTab('refactor')}
+                                    >
+                                        Refactor
+                                    </button>
+                                    <button
+                                        className={`px-3 py-1 rounded-lg text-sm ${activeTab === 'explain' ? 'bg-[#6C63FF] text-white' : 'text-gray-600 hover:text-[#6C63FF]'}`}
+                                        onClick={() => setActiveTab('explain')}
+                                    >
+                                        Explain
+                                    </button>
+                                    <button
+                                        className={`px-3 py-1 rounded-lg text-sm ${activeTab === 'translate' ? 'bg-[#6C63FF] text-white' : 'text-gray-600 hover:text-[#6C63FF]'}`}
+                                        onClick={() => setActiveTab('translate')}
+                                    >
+                                        Translate
+                                    </button>
+                                </div>
                             </div>
-                            <div className="flex items-center gap-4">
-                                <span className="text-gray-400 text-sm">debounce.js </span>
 
+
+                            <div className="font-mono text-sm text-gray-100 bg-[#0b1020]  overflow-x-auto shadow-xl">
+                                <SyntaxHighlighter
+                                    language="javascript"
+                                    style={vscDarkPlus}
+
+                                    customStyle={{
+                                        padding: '12px 8px',
+                                        margin: 0,
+                                        background: "transparent",
+                                        lineHeight: '1.6',
+                                        borderRadius: "0.75rem",
+                                        fontSize: "1em"
+                                    }}
+                                    wrapLines={true}
+                                    showLineNumbers={true}
+                                    lineNumberStyle={{
+                                        color: '#9ca3af',
+                                        paddingRight: '1.5em'
+                                    }}
+                                >
+                                    {codeExamples[activeTab]}
+                                </SyntaxHighlighter>
+                            </div>
+
+                            <div className="flex justify-between items-center bg-gray-50 px-4 py-3">
+                                <span className="text-xs text-gray-500">JavaScript</span>
                                 <button
                                     onClick={handleCopy}
-                                    className="text-gray-400 hover:text-white transition-colors duration-200 flex items-center"
+                                    className="flex items-center text-xs text-gray-500 hover:text-[#6C63FF]"
                                 >
                                     {copied ? (
-                                        <Check className="h-4 w-4 text-green-500" />
+                                        <>
+                                            <Check className="h-4 w-4 mr-1 text-green-500" />
+                                            Copied!
+                                        </>
                                     ) : (
-                                        <Copy className="h-4 w-4" />
+                                        <>
+                                            <Copy className="h-4 w-4 mr-1" />
+                                            Copy Code
+                                        </>
                                     )}
-                                    <span className="ml-1 text-xs">
-                                        {copied ? "Copied!" : "Copy"}
-                                    </span>
                                 </button>
                             </div>
                         </div>
 
-                        <SyntaxHighlighter
-                            language="javascript"
-                            style={atomDark}
-                            customStyle={{
-                                background: 'transparent',
-                                padding: 0,
-                                margin: 0,
-                                fontSize: '0.9rem',
-                                lineHeight: '1.5'
-                            }}
-                            wrapLines={true}
-                            showLineNumbers={true}
-                            lineNumberStyle={{
-                                color: '#6b7280',
-                                paddingRight: '1.5em'
-                            }}
-                        >
-                            {codeString}
-                        </SyntaxHighlighter>
+                        <div className="flex space-x-4">
+                            <Link href="/signup">
+                                <button className="flex items-center bg-[#6C63FF] text-white px-6 py-3 rounded-lg hover:bg-[#5851dd] transition-colors">
+                                    <Sparkles className="h-5 w-5 mr-2" />
+                                    Try Devy AI
+                                </button>
+                            </Link>
+                            <Link href="/login">
+                                <button className="flex items-center border border-gray-300 text-gray-700 px-6 py-3 rounded-lg hover:border-[#6C63FF] transition-colors">
+                                    <Play className="h-5 w-5 mr-2" />
+                                    Watch Demo
+                                </button>
+                            </Link>
+                        </div>
+                    </div>
 
-                        <div className="mt-6 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
-                            <div className="flex items-center space-x-4">
-                                <span className="text-gray-400 text-sm">Performance Utility
-                                </span>
-                                <div className="flex items-center space-x-1">
-                                    <div className="w-2 h-2 bg-green-500 rounded-full animate-pulse"></div>
-                                    <span className="text-gray-400 text-xs">Vanilla JavaScript</span>
+                    <div className="flex flex-col justify-center">
+                        <h2 className="text-2xl font-bold text-gray-900 mb-8">Why Developers Love Devy</h2>
+
+                        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                            {features.map((feature, index) => (
+                                <div key={index} className="bg-white p-5 rounded-xl shadow-sm border border-gray-100 hover:border-[#6C63FF] transition-colors">
+                                    <div className="bg-[#6C63FF] bg-opacity-10 p-2 rounded-lg w-fit text-[#6C63FF] mb-3">
+                                        {feature.icon}
+                                    </div>
+                                    <h3 className="font-bold text-[#6C63FF] mb-2">{feature.title}</h3>
+                                    <p className="text-md text-gray-600">{feature.description}</p>
                                 </div>
-                            </div>
-                            <div className="flex flex-wrap gap-2">
-                                {['Frontend Friendly', 'Production Ready', 'Tested', 'Reusable'].map((tag, i) => (
-                                    <span
-                                        key={i}
-                                        className="bg-gray-800 text-gray-300 px-3 py-1 rounded-full text-xs border border-gray-700"
-                                    >
-                                        {tag}
-                                    </span>
-                                ))}
-                            </div>
+                            ))}
                         </div>
 
-                        <div className="absolute top-0 right-0 w-64 h-64 bg-gradient-to-bl from-blue-600/10 to-transparent rounded-full blur-2xl"></div>
+
                     </div>
                 </div>
-
-                <div className="mt-16 text-gray-400 text-sm max-w-2xl mx-auto">
-                    Trusted by engineering teams at <span className="text-white">Stripe</span>, <span className="text-white">Shopify</span>, and <span className="text-white">Netflix</span> to accelerate development workflows and maintain code quality at scale.
-                </div>
             </div>
-        </section>
+        </div >
     );
 };
 
-export default HeroSection;
+export default DevyHero;

@@ -10,6 +10,9 @@ import {
     TableHeader,
     TableRow
 } from '@/components/ui/table';
+import { Button } from '@/components/ui/button';
+import { PlusCircleIcon } from 'lucide-react';
+import Link from 'next/link';
 
 const CreditsHistory = async () => {
     let session = await getServerSession(NEXT_AUTH);
@@ -28,11 +31,18 @@ const CreditsHistory = async () => {
 
     return (
         <>
-            <div>
-                <h1 className="text-3xl font-bold text-slate-900">Credits History</h1>
-                <p className="text-slate-600 mt-2">
-                    Track your tools usage and credit consumption.
-                </p>
+            <div className='flex justify-between items-center '>
+                <div>
+                    <h1 className="text-3xl font-bold text-slate-900">Credits History</h1>
+                    <p className="text-slate-600 mt-2">
+                        Track your tools usage and credit consumption.
+                    </p>
+                </div>
+                <Link href="/dashboard/buy-credits">
+                    <Button>
+                        <PlusCircleIcon />  Buy Credits
+                    </Button>
+                </Link>
             </div>
 
             <Table>
