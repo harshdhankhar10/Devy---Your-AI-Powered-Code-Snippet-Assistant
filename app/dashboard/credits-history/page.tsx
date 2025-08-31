@@ -11,7 +11,7 @@ import {
     TableRow
 } from '@/components/ui/table';
 import { Button } from '@/components/ui/button';
-import { PlusCircleIcon } from 'lucide-react';
+import { HistoryIcon, PlusCircleIcon } from 'lucide-react';
 import Link from 'next/link';
 
 const CreditsHistory = async () => {
@@ -38,11 +38,19 @@ const CreditsHistory = async () => {
                         Track your tools usage and credit consumption.
                     </p>
                 </div>
-                <Link href="/dashboard/buy-credits">
-                    <Button>
-                        <PlusCircleIcon />  Buy Credits
-                    </Button>
-                </Link>
+                <div className='flex justify-between items-center gap-4' >
+                    <Link href="/dashboard/buy-credits">
+                        <Button>
+                            <PlusCircleIcon />  Buy Credits
+                        </Button>
+                    </Link>
+                    <Link href="/dashboard/transaction-history">
+                        <Button>
+                            <HistoryIcon />  Transactions History
+                        </Button>
+                    </Link>
+
+                </div>
             </div>
 
             <Table>
