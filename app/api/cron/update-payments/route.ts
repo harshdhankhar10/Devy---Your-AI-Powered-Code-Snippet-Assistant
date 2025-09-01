@@ -9,15 +9,13 @@ export async function GET(request: NextRequest) {
             return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
         }
 
-        // make payments status to failed who are pending for more than 3 days
-        const threeDaysAgo = new Date();
-        threeDaysAgo.setDate(threeDaysAgo.getDate() - 3);
+        const date = new Date();
 
         const result = await prisma.payment.updateMany({
             where: {
                 status: 'PENDING',
                 createdAt: {
-                    lt: threeDaysAgo,
+                    lt: date,
                 },
             },
             data: {
