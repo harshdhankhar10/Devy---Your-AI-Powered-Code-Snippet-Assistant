@@ -10,7 +10,7 @@ export async function POST(req: NextRequest) {
         }
 
         const oneMonthAgo = new Date();
-        // fifteenDaysAgo.setDate(fifteenDaysAgo.getDate() - 15);
+        oneMonthAgo.setDate(oneMonthAgo.getDate() - 30);
 
         const inactiveUsers = await prisma.user.findMany({
             where: {
