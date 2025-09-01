@@ -1,7 +1,7 @@
 "use client"
 
 import React from 'react';
-import { ArrowLeftRightIcon, LogOut, SquareActivity, WandSparkles } from "lucide-react"
+import { ArrowLeftRightIcon, CreditCardIcon, LogOut, Settings, Settings2Icon, SquareActivity, WandSparkles } from "lucide-react"
 import Link from 'next/link';
 import { Button } from '@/components/ui/button';
 import { signOut } from 'next-auth/react';
@@ -58,9 +58,9 @@ const Sidebar = () => {
                                         d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"
                                     ></path>
                                 </svg>
-                                <span className="ml-3">My Snippets</span>
+                                <span className="ml-3">Snippets</span>
                             </Link>
-                            <Link
+                            {/* <Link
                                 href="/dashboard/snippets/create"
                                 className="flex items-center px-3 py-2.5 text-sm font-medium text-gray-600 hover:bg-gray-200 rounded-lg"
                             >
@@ -79,7 +79,7 @@ const Sidebar = () => {
                                     ></path>
                                 </svg>
                                 <span className="ml-3">New Snippet</span>
-                            </Link>
+                            </Link> */}
 
                             <Link
                                 href="/dashboard/lab"
@@ -92,7 +92,7 @@ const Sidebar = () => {
                                     New
                                 </span>
                             </Link>
-                            <Link
+                            {/* <Link
                                 href="/dashboard/utilities"
                                 className="flex items-center px-3 py-2.5 text-sm font-medium text-gray-600 hover:bg-gray-200 rounded-lg"
                             >
@@ -112,7 +112,7 @@ const Sidebar = () => {
                                 </svg>
                                 <span className="ml-3">Utilities </span>
 
-                            </Link>
+                            </Link> */}
                             <Link
                                 href="/dashboard/folders"
                                 className="flex items-center px-3 py-2.5 text-sm font-medium text-gray-600 hover:bg-gray-200 rounded-lg"
@@ -133,33 +133,14 @@ const Sidebar = () => {
                                 </svg>
                                 <span className="ml-3">Projects/Folders</span>
                             </Link>
-                            <a
-                                href="#"
-                                className="flex items-center px-3 py-2.5 text-sm font-medium text-gray-600 hover:bg-gray-200 rounded-lg"
-                            >
-                                <svg
-                                    className="w-5 h-5"
-                                    fill="none"
-                                    stroke="currentColor"
-                                    viewBox="0 0 24 24"
-                                    xmlns="http://www.w3.org/2000/svg"
-                                >
-                                    <path
-                                        strokeLinecap="round"
-                                        strokeLinejoin="round"
-                                        strokeWidth="2"
-                                        d="M13.828 10.172a4 4 0 00-5.656 0l-4 4a4 4 0 105.656 5.656l1.102-1.101m-.758-4.899a4 4 0 005.656 0l4-4a4 4 0 00-5.656-5.656l-1.1 1.1"
-                                    ></path>
-                                </svg>
-                                <span className="ml-3">Shared Snippets</span>
-                            </a>
+
                         </div>
                     </nav>
                 </div>
 
                 <div className="px-4 pb-6 pt-2 absolute bottom-0 w-64 border-t border-gray-200">
                     <div className="space-y-2">
-                        <a
+                        <Link
                             href="#"
                             className="flex items-center px-3 py-2.5 text-sm font-medium text-gray-600 hover:bg-gray-200 rounded-lg"
                         >
@@ -184,13 +165,13 @@ const Sidebar = () => {
                                 ></path>
                             </svg>
                             <span className="ml-3">Settings</span>
-                        </a>
+                        </Link>
                         <Link
-                            href="/dashboard/recent-activity"
+                            href="/dashboard/transaction-history"
                             className="flex items-center px-3 py-2.5 text-sm font-medium text-gray-600 hover:bg-gray-200 rounded-lg"
                         >
-                            <SquareActivity className='h-5 w-5' />
-                            <span className="ml-3">Recent Activity</span>
+                            <CreditCardIcon className='h-5 w-5' />
+                            <span className="ml-3">Billing</span>
                         </Link>
                         <Button onClick={() => (signOut())} className='w-full flex  justify-start' >
                             <LogOut className='h-5 w-5' />
@@ -201,8 +182,8 @@ const Sidebar = () => {
             </div>
             <div className="md:hidden fixed bottom-0 left-0 right-0 bg-white border-t border-gray-200 z-50">
                 <div className="flex justify-around items-center h-16">
-                    <a
-                        href="#"
+                    <Link
+                        href="/dashboard"
                         className="flex flex-col items-center justify-center p-2 text-[#6C63FF]"
                     >
                         <svg
@@ -220,10 +201,10 @@ const Sidebar = () => {
                             />
                         </svg>
                         <span className="text-xs mt-1">Home</span>
-                    </a>
+                    </Link>
 
-                    <a
-                        href="#"
+                    <Link
+                        href="/dashboard/snippets"
                         className="flex flex-col items-center justify-center p-2 text-gray-600"
                     >
                         <svg
@@ -241,10 +222,10 @@ const Sidebar = () => {
                             />
                         </svg>
                         <span className="text-xs mt-1">Snippets</span>
-                    </a>
+                    </Link>
 
-                    <a
-                        href="#"
+                    <Link
+                        href="/dashboard/snippets/create"
                         className="flex flex-col items-center justify-center p-2 -mt-6"
                     >
                         <div className="bg-[#6C63FF] p-3 rounded-full text-white shadow-lg">
@@ -264,10 +245,10 @@ const Sidebar = () => {
                             </svg>
                         </div>
                         <span className="text-xs mt-1 text-[#6C63FF]">New</span>
-                    </a>
+                    </Link>
 
-                    <a
-                        href="#"
+                    <Link
+                        href="/dashboard/lab"
                         className="flex flex-col items-center justify-center p-2 text-gray-600"
                     >
                         <svg
@@ -285,28 +266,15 @@ const Sidebar = () => {
                             />
                         </svg>
                         <span className="text-xs mt-1">AI Lab</span>
-                    </a>
+                    </Link>
 
-                    <a
-                        href="#"
+                    <Link
+                        href="/dashboard/settings"
                         className="flex flex-col items-center justify-center p-2 text-gray-600"
                     >
-                        <svg
-                            className="w-6 h-6"
-                            fill="none"
-                            stroke="currentColor"
-                            viewBox="0 0 24 24"
-                            xmlns="http://www.w3.org/2000/svg"
-                        >
-                            <path
-                                strokeLinecap="round"
-                                strokeLinejoin="round"
-                                strokeWidth="2"
-                                d="M4 6h16M4 12h16M4 18h16"
-                            />
-                        </svg>
+                        <Settings className='h-5 w-5' />
                         <span className="text-xs mt-1">More</span>
-                    </a>
+                    </Link>
                 </div>
             </div>
         </>

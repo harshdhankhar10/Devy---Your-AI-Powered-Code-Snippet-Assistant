@@ -6,6 +6,15 @@ import { NEXT_AUTH } from '@/utils/auth';
 import prisma from '@/lib/prisma';
 import { Button } from '@/components/ui/button';
 import Link from 'next/link';
+import {
+    DropdownMenu,
+    DropdownMenuContent,
+    DropdownMenuGroup,
+    DropdownMenuItem,
+    DropdownMenuSeparator,
+    DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu"
+
 
 
 const TopNavbar = async () => {
@@ -70,14 +79,35 @@ const TopNavbar = async () => {
                 </button>
 
                 <div className="relative">
-                    <button className="flex items-center space-x-2 focus:outline-none">
-                        <img
-                            className="w-10 h-10 rounded-full border-2 p-1 border-[#6C63FF] "
-                            src={userInfo?.profilePicture}
-                            alt="User Avatar"
-                        />
+                    <DropdownMenu>
+                        <DropdownMenuTrigger asChild>
+                            <button className="flex items-center space-x-2 focus:outline-none">
+                                <img
+                                    className="w-10 h-10 rounded-full border-2 p-1 border-[#6C63FF] "
+                                    src={userInfo?.profilePicture}
+                                    alt="User Avatar"
+                                />
 
-                    </button>
+                            </button>
+                        </DropdownMenuTrigger>
+                        <DropdownMenuContent className="w-56 mr-8 mt-2" align="start">
+
+                            <DropdownMenuGroup>
+                                <DropdownMenuItem>
+                                    Profile
+                                </DropdownMenuItem>
+                                <DropdownMenuItem>
+                                    Billing
+                                </DropdownMenuItem>
+                                <DropdownMenuItem>
+                                    Settings
+                                </DropdownMenuItem>
+                                <DropdownMenuItem>
+                                    Recent Activity
+                                </DropdownMenuItem>
+                            </DropdownMenuGroup>
+                        </DropdownMenuContent>
+                    </DropdownMenu>
                 </div>
             </div>
         </header>
