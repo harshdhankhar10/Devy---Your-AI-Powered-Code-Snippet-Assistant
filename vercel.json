@@ -3,6 +3,10 @@
         {
             "path": "/api/cron/update-payments",
             "schedule": "0 0 * * 2"
+        },
+        {
+            "path": "/api/cron/last-login",
+            "schedule": "0 0 1 * *"
         }
     ]
 }
