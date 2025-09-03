@@ -59,19 +59,29 @@ model Snippet {
   views             Int                @default(0)
   langugae          String
   tags              String[]
-  folderId          String?
   isPublic          Boolean            @default(true)
   shareUrl          String?
   aiModified        Boolean            @default(false)
   lastActionType    LastActionModified @default(NO)
   version           String             @default("1.0")
+  folderSnippets    FolderSnippet[]
   aiSummary         String?
   createdAt         DateTime           @default(now())
   updatedAt         DateTime           @updatedAt()
   isCommentsAllowed Boolean            @default(true)
   Comment           Comment[]
   Like              Like[]
-  Folder            Folder?            @relation(fields: [folderId], references: [id])
+}
+
+model FolderSnippet {
+  id        String   @unique @default(cuid())
+  folderId  String
+  snippetId String
+  folder    Folder   @relation(fields: [folderId], references: [id])
+  snippet   Snippet  @relation(fields: [snippetId], references: [id])
+  createdAt DateTime @default(now())
+
+  @@unique([folderId, snippetId])
 }
 
 model Comment {
@@ -96,14 +106,15 @@ model Like {
 }
 
 model Folder {
-  id         String    @unique @default(cuid())
-  name       String
-  folderLogo String    @default("http://cdn-icons-png.flaticon.com/512/5994/5994710.png")
-  userId     String
-  category   String
-  isPublic   Boolean   @default(true)
-  snippets   Snippet[]
-  user       User      @relation(fields: [userId], references: [id])
+  id             String          @unique @default(cuid())
+  name           String
+  folderLogo     String          @default("http://cdn-icons-png.flaticon.com/512/5994/5994710.png")
+  userId         String
+  category       String
+  isPublic       Boolean         @default(true)
+  folderSnippets FolderSnippet[]
+
+  user User @relation(fields: [userId], references: [id])
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt

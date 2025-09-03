@@ -9,7 +9,10 @@ const page = async () => {
     const userId = session?.user?.id;
     const folders = await prisma.folder.findMany({
         where: { userId },
+        orderBy: { createdAt: 'desc' },
+        include: { folderSnippets: true }
     })
+    console.log(folders)
     return (
         <>
             <AllFolders folders={folders} />

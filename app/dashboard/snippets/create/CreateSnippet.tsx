@@ -79,8 +79,11 @@ const NewSnippet = () => {
             })
             if (response.status == 201) {
                 alert("Snippet Saved Successfully!");
-                router.push("/dashboard/snippets")
-                return;
+                router.refresh()
+                setTimeout(() => {
+                    router.push("/dashboard/snippets")
+                    return;
+                }, 2000)
             }
         } catch (error: any) {
             alert(error.response.data.error)
