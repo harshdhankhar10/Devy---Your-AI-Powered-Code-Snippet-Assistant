@@ -16,10 +16,8 @@ interface Bin {
     code: string;
     language: string;
     passwordHash: string | null;
-    customUrl: string | null;
     burnAfterReading: boolean;
     createdAt: Date;
-    views?: number;
 }
 
 interface BinProps {
@@ -182,12 +180,7 @@ const ViewBin = ({ bin, binPass }: BinProps) => {
                                                 <Clock className="h-4 w-4 mr-1.5" />
                                                 <span>{formatTime(new Date(bin.createdAt))}</span>
                                             </div>
-                                            {bin.views !== undefined && (
-                                                <div className="flex items-center">
-                                                    <Eye className="h-4 w-4 mr-1.5" />
-                                                    <span>{bin.views} views</span>
-                                                </div>
-                                            )}
+
                                             {bin.burnAfterReading && (
                                                 <div className="flex items-center text-amber-600 font-medium">
                                                     <AlertCircle className="h-4 w-4 mr-1.5" />

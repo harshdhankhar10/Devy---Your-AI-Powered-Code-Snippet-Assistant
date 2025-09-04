@@ -8,6 +8,7 @@ const page = async ({ params }: any) => {
         where: { id: params.id }
     })
 
+    console.log(bin);
     let binPass = bin?.passwordHash ? true : null;
     return (
         <>
