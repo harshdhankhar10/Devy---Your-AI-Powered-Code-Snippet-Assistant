@@ -3,13 +3,8 @@ import { getServerSession } from 'next-auth'
 import { NEXT_AUTH } from '@/utils/auth'
 import prisma from '@/lib/prisma'
 
-interface PageProps {
-    params: {
-        id: string
-    }
-}
 
-const FolderSnippetsPage = async ({ params }: PageProps) => {
+const FolderSnippetsPage = async ({ params }: any) => {
     const session = await getServerSession(NEXT_AUTH);
     const user = session?.user;
 

@@ -23,10 +23,21 @@ export async function GET(req: NextRequest) {
             },
         });
 
+        // deleting anonymous bins older than 24 hours
+        let cutoffDate = new Date();
+        cutoffDate.setHours(cutoffDate.getHours() - 24);
+
+        await prisma.anonymousBin.deleteMany({
+            where: {
+                createdAt: {
+                    lt: cutoffDate,
+                },
+            },
+        });
+
         return NextResponse.json({
             success: true,
-            message: `Updated ${result.count} pending payments to failed status`,
-            updatedCount: result.count,
+            message: "cron job executed successfully",
         });
     } catch (error) {
         console.error('Cron job error:', error);
