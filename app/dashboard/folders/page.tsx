@@ -12,7 +12,6 @@ const page = async () => {
         orderBy: { createdAt: 'desc' },
         include: { folderSnippets: true }
     })
-    console.log(folders)
     return (
         <>
             <AllFolders folders={folders} />

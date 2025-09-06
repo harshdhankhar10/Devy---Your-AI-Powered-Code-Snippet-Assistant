@@ -1,5 +1,4 @@
 import Footer from '@/components/Footer'
-import CTASection from '@/components/homepage/CTASection'
 import FeaturesSection from '@/components/homepage/FeaturesSection'
 import HeroSection from '@/components/homepage/HeroSection'
 import HowItWorks from '@/components/homepage/HowItWorks'
@@ -13,7 +12,6 @@ const Homepage = () => {
             <HeroSection />
             <FeaturesSection />
             <HowItWorks />
-            <CTASection />
             <Footer />
         </>
     )
