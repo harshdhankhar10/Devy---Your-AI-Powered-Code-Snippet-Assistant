@@ -141,7 +141,7 @@ const Sidebar = () => {
                 <div className="px-4 pb-6 pt-2 absolute bottom-0 w-64 border-t border-gray-200">
                     <div className="space-y-2">
                         <Link
-                            href="#"
+                            href="/dashboard/settings"
                             className="flex items-center px-3 py-2.5 text-sm font-medium text-gray-600 hover:bg-gray-200 rounded-lg"
                         >
                             <svg

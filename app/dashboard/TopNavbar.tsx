@@ -1,5 +1,5 @@
 
-import { CreditCard } from 'lucide-react';
+import { BellRing, CreditCard } from 'lucide-react';
 import React from 'react';
 import { getServerSession } from 'next-auth';
 import { NEXT_AUTH } from '@/utils/auth';
@@ -62,20 +62,15 @@ const TopNavbar = async () => {
                 </Link>
 
                 <button className="p-2 text-gray-500 rounded-full hover:bg-gray-100 hover:text-gray-700 focus:outline-none">
-                    <svg
-                        className="w-6 h-6"
-                        fill="none"
-                        stroke="currentColor"
-                        viewBox="0 0 24 24"
-                        xmlns="http://www.w3.org/2000/svg"
-                    >
-                        <path
-                            strokeLinecap="round"
-                            strokeLinejoin="round"
-                            strokeWidth="2"
-                            d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9"
-                        />
-                    </svg>
+                    <DropdownMenu>
+                        <DropdownMenuTrigger asChild>
+                            <BellRing className='h-5 w-5' />
+                        </DropdownMenuTrigger>
+                        <DropdownMenuContent className="w-56 mr-20 mt-4" align="start">
+                            <div className="text-center text-gray-500 py-2">No notifications yet</div>
+                        </DropdownMenuContent>
+
+                    </DropdownMenu>
                 </button>
 
                 <div className="relative">
@@ -93,18 +88,21 @@ const TopNavbar = async () => {
                         <DropdownMenuContent className="w-56 mr-8 mt-2" align="start">
 
                             <DropdownMenuGroup>
-                                <DropdownMenuItem>
-                                    Profile
-                                </DropdownMenuItem>
-                                <DropdownMenuItem>
-                                    Billing
-                                </DropdownMenuItem>
-                                <DropdownMenuItem>
-                                    Settings
-                                </DropdownMenuItem>
-                                <DropdownMenuItem>
-                                    Recent Activity
-                                </DropdownMenuItem>
+                                <Link href="/dashboard/settings">
+                                    <DropdownMenuItem>
+                                        Profile
+                                    </DropdownMenuItem>
+                                </Link>
+                                <Link href="/dashboard/transaction-history">
+                                    <DropdownMenuItem>
+                                        Billing
+                                    </DropdownMenuItem>
+                                </Link>
+                                <Link href="/dashboard/recent-activity" >
+                                    <DropdownMenuItem>
+                                        Recent Activity
+                                    </DropdownMenuItem>
+                                </Link>
                             </DropdownMenuGroup>
                         </DropdownMenuContent>
                     </DropdownMenu>
