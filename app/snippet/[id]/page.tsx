@@ -111,10 +111,31 @@ export default async function PublicSnippetPage({
         data: { views: { increment: 1 } }
     })
 
+    const isSnippetLiked = await prisma.like.findFirst({
+        where: { snippetId: snippet.id }
+    })
+
+    const comments = await prisma.comment.findMany({
+        where: { snippetId: snippet.id },
+        include: {
+            user: {
+                select: {
+                    id: true,
+                    name: true,
+                    profilePicture: true
+                }
+            },
+
+        },
+        orderBy: {
+            createdAt: 'desc'
+        }
+    })
+
     return (
         <>
             <Navbar />
-            <ViewPublicSnippet snippet={JSON.parse(JSON.stringify(snippet))} />
+            <ViewPublicSnippet snippet={JSON.parse(JSON.stringify(snippet))} isSnippetLiked={isSnippetLiked} comments={comments} />
         </>
     )
 }

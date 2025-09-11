@@ -1,5 +1,5 @@
 'use client'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { Prism as SyntaxHighlighter } from 'react-syntax-highlighter'
 import { vscDarkPlus } from 'react-syntax-highlighter/dist/cjs/styles/prism'
 import { Copy, Share2, Heart, MessageSquare, Globe, Clock, Eye, Code } from 'lucide-react'
@@ -7,7 +7,11 @@ import { Button } from '@/components/ui/button'
 import { Badge } from '@/components/ui/badge'
 import { Avatar, AvatarImage, AvatarFallback } from '@/components/ui/avatar'
 import { Skeleton } from '@/components/ui/skeleton'
-import { toast } from 'sonner'
+import { toast } from 'react-toastify'
+import axios from 'axios'
+import { getSession } from 'next-auth/react'
+import { Textarea } from './ui/textarea'
+import { useRouter } from 'next/navigation'
 
 interface Snippet {
     id: string
@@ -30,8 +34,9 @@ interface Comment {
     content: string
     createdAt: Date
     user: {
-        name: string
-        image: string | null
+        id: string
+        name: string | null
+        profilePicture: string | null
     }
 }
 
@@ -50,30 +55,23 @@ const languageMap: Record<string, string> = {
     ruby: 'Ruby'
 }
 
-const staticComments: Comment[] = [
-    {
-        id: '1',
-        content: 'This is really clean implementation! Thanks for sharing.',
-        createdAt: new Date('2023-05-15'),
-        user: {
-            name: 'DevUser123',
-            image: null
-        }
-    },
-    {
-        id: '2',
-        content: 'Could you explain the part about the state management?',
-        createdAt: new Date('2023-05-16'),
-        user: {
-            name: 'CodeExplorer',
-            image: null
-        }
-    }
-]
 
-export default function ViewPublicSnippet({ snippet, isLoading = false }: { snippet: Snippet | null, isLoading?: boolean }) {
+export default function ViewPublicSnippet({ snippet, isLoading = false, isSnippetLiked, comments }: { snippet: Snippet | null, isLoading?: boolean, isSnippetLiked?: any, comments: Comment[] }) {
     const [isCopied, setIsCopied] = useState(false)
-    const [isLiked, setIsLiked] = useState(false)
+    const [isLiked, setIsLiked] = useState(isSnippetLiked ? true : false)
+    const [session, setSession] = useState<any>(null)
+    const [content, setContent] = useState('')
+    const router = useRouter()
+    const [loading, setLoading] = useState(false)
+
+    useEffect(() => {
+        const fetchSession = async () => {
+            const sess = await getSession()
+            setSession(sess)
+        }
+
+        fetchSession()
+    }, [])
 
     const copyToClipboard = () => {
         if (!snippet) return
@@ -83,20 +81,60 @@ export default function ViewPublicSnippet({ snippet, isLoading = false }: { snip
         setTimeout(() => setIsCopied(false), 2000)
     }
 
+
     const shareSnippet = () => {
         navigator.clipboard.writeText(window.location.href)
         toast.success('Link copied to clipboard!')
     }
 
-    const toggleLike = () => {
+    const toggleLike = async () => {
+        if (!session) {
+            toast.error('You must be signed in to like a snippet')
+            return
+        }
         setIsLiked(!isLiked)
-        toast.success(!isLiked ? 'Liked this snippet!' : 'Removed like')
+        const response = await axios.post('/api/dashboard/snippets/like', { snippetId: snippet?.id })
+        if (response.data.error) {
+            toast.error(response.data.error)
+            setIsLiked(isLiked)
+        } else {
+            toast.success(response.data.message)
+        }
     }
+
 
     const formatDate = (date: Date) => {
         const d = new Date(date)
         return `${d.getDate()}/${d.getMonth() + 1}/${d.getFullYear()}`
     }
+
+    const handleAddComment = async () => {
+        if (content.trim().length === 0) {
+            toast.error('Comment cannot be empty')
+            return
+        }
+        try {
+            setLoading(true)
+            const response = await axios.post('/api/dashboard/snippets/comments', {
+                snippetId: snippet?.id,
+                content
+            })
+            if (response.data.error) {
+                toast.error(response.data.error)
+            } else {
+                toast.success(response.data.message)
+                setContent('')
+                router.refresh()
+            }
+        } catch (error) {
+            console.error(error)
+            toast.error('An error occurred while adding the comment')
+        } finally {
+            setLoading(false)
+        }
+    }
+
+
 
     if (isLoading || !snippet) {
         return (
@@ -275,11 +313,12 @@ export default function ViewPublicSnippet({ snippet, isLoading = false }: { snip
 
                         <Button
                             variant={isLiked ? "default" : "outline"}
+                            disabled={!session}
                             className={`w-full mt-6 gap-2 ${isLiked ? 'bg-pink-500 hover:bg-pink-600' : 'border-gray-200 hover:bg-gray-50'}`}
                             onClick={toggleLike}
                         >
                             <Heart className={`h-4 w-4 ${isLiked ? 'fill-current' : ''}`} />
-                            {isLiked ? 'Liked' : 'Like this snippet'}
+                            {!session ? 'Sign in to like' : isLiked ? 'Liked' : 'Like'}
                         </Button>
                     </div>
 
@@ -288,14 +327,14 @@ export default function ViewPublicSnippet({ snippet, isLoading = false }: { snip
                             <MessageSquare className="h-5 w-5 text-gray-700" />
                             <h2 className="font-semibold text-gray-900">Comments</h2>
                         </div>
-                        <div className="space-y-4">
-                            {staticComments.map((comment) => (
-                                <div key={comment.id} className="border-b border-gray-100 pb-4 last:border-0 last:pb-0">
+                        <div className="space-y-4 max-h-72 overflow-y-auto">
+                            {comments.map((comment) => (
+                                <div key={comment.id} className="border-b border-gray-100 pb-4 last:border-0 last:pb-4 overflow-y-auto">
                                     <div className="flex items-center gap-3 mb-2">
                                         <Avatar className="h-8 w-8">
-                                            <AvatarImage src={comment.user.image || undefined} />
+                                            <AvatarImage src={comment.user.profilePicture || undefined} />
                                             <AvatarFallback className="bg-gray-100 text-xs">
-                                                {comment.user.name.charAt(0).toUpperCase()}
+                                                {comment?.user?.name?.charAt(0).toUpperCase() || 'U'}
                                             </AvatarFallback>
                                         </Avatar>
                                         <div>
@@ -307,11 +346,14 @@ export default function ViewPublicSnippet({ snippet, isLoading = false }: { snip
                                 </div>
                             ))}
                         </div>
-                        <div className="pt-4">
-                            <Button variant="outline" className="w-full border-gray-200 hover:bg-gray-50">
-                                Sign in to comment
-                            </Button>
-                        </div>
+                        {session && (
+                            <div>
+                                <Textarea value={content} onChange={(e) => setContent(e.target.value)} placeholder="Add a comment..." />
+                                <Button onClick={handleAddComment} className="w-full mt-4" disabled={loading}>
+                                    {loading ? 'Adding...' : 'Add a comment'}
+                                </Button>
+                            </div>
+                        )}
                     </div>
                 </div>
 
