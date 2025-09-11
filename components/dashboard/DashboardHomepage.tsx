@@ -40,15 +40,14 @@ const DashboardHome = ({ snippets, folders, recentActivities }: DashboardHomePro
         { id: 6, name: 'Add Comments', description: 'Automatically generate comments for your code', color: 'teal', link: "/ai-lab/add-comments" },
     ];
 
-
-
+    const formatDate = (date: Date) => {
+        return `${date.getMonth() + 1}/${date.getDate()}/${date.getFullYear()}`;
+    };
 
     return (
         <div className="min-h-screen ">
             <div className="max-w-7xl mx-auto">
-                {/* Stats Grid */}
                 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-8">
-                    {/* Snippets Card */}
                     <div className="bg-white rounded-xl p-6 border border-gray-200 shadow-sm">
                         <div className="flex items-center justify-between mb-4">
                             <div className="p-3 bg-blue-100 rounded-lg">
@@ -90,7 +89,6 @@ const DashboardHome = ({ snippets, folders, recentActivities }: DashboardHomePro
                 </div>
 
                 <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
-                    {/* Recent Activity */}
                     <div className="bg-white rounded-xl p-6 border border-gray-200 shadow-sm">
                         <div className="flex items-center justify-between mb-6">
                             <h2 className="text-lg font-semibold text-gray-900">Recent Activity</h2>
@@ -104,7 +102,7 @@ const DashboardHome = ({ snippets, folders, recentActivities }: DashboardHomePro
                                 recentActivity.map((activity) => (
                                     <div key={activity.id} className="p-4 bg-gray-50 rounded-lg border border-gray-200">
                                         <h3 className="font-medium text-gray-900">{activity.title}</h3>
-                                        <p className="text-sm text-gray-600">Edited on {new Date(activity.createdAt).toLocaleDateString()}</p>
+                                        <p className="text-sm text-gray-600">Edited on {formatDate(new Date(activity.createdAt))}</p>
                                     </div>
                                 ))
                             )}
